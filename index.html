@@ -1,130 +1,573 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Defensive Driving Checklist</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Defensive Driving – Digital Checklist</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --card: #121825;
+      --card2: #0f1520;
+      --text: #e7eefc;
+      --muted: #aab7d1;
+      --accent: #4aa3ff;
+      --good: #47d18c;
+      --warn: #ffcc66;
+      --bad: #ff6b6b;
+      --border: rgba(231, 238, 252, 0.10);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --pad: 14px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(74,163,255,.18), transparent 55%),
+                  radial-gradient(900px 700px at 90% 0%, rgba(71,209,140,.12), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.35;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(11,15,20,.82);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 14px; }
+    .title {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0;
+      letter-spacing: .2px;
+    }
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .controls {
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .search {
+      width: 100%;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    input[type="search"] {
+      width: 100%;
+      background: rgba(18,24,37,.75);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 14px;
+      outline: none;
+      font-size: 14px;
+    }
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(18,24,37,.65);
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary {
+      background: rgba(74,163,255,.18);
+      border-color: rgba(74,163,255,.35);
+    }
+    .btn.danger {
+      background: rgba(255,107,107,.16);
+      border-color: rgba(255,107,107,.35);
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(18,24,37,.92), rgba(15,21,32,.92));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .card .inner { padding: var(--pad); }
+    .pill {
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      width: fit-content;
+    }
+    .progress-wrap {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+    .progress-top {
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(231,238,252,.10);
+      overflow:hidden;
+    }
+    .bar > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(74,163,255,.95), rgba(71,209,140,.95));
+      border-radius: 999px;
+      transition: width .2s ease;
+    }
+    details {
+      border-top: 1px solid var(--border);
+    }
+    details:first-of-type {
+      border-top: 0;
+    }
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .sec-title {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .2px;
+    }
+    .sec-meta {
+      color: var(--muted);
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space: nowrap;
+    }
+    .chev {
+      width: 18px; height: 18px;
+      opacity: .9;
+      transition: transform .2s ease;
+    }
+    details[open] .chev { transform: rotate(180deg); }
+    .items {
+      padding: 0 14px 14px 14px;
+      display:grid;
+      gap: 10px;
+    }
+    .item {
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      padding: 12px;
+      border-radius: var(--radius2);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+    .item input {
+      margin-top: 3px;
+      width: 20px; height: 20px;
+      accent-color: var(--accent);
+      flex: 0 0 auto;
+    }
+    .item label {
+      cursor: pointer;
+      user-select: none;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .item small {
+      display:block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+    .item.done {
+      border-color: rgba(71,209,140,.35);
+      background: rgba(71,209,140,.07);
+    }
 
-<style>
-body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:#0b0f14;
-  color:#e7eefc;
-}
-
-header{
-  padding:20px;
-  background:#121825;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-h1{
-  margin:0;
-  font-size:20px;
-}
-
-.section{
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-.section h2{
-  margin:0;
-  padding:15px;
-  background:#0f1520;
-  cursor:pointer;
-  font-size:15px;
-}
-
-.items{
-  padding:10px 15px 20px 15px;
-  display:none;
-}
-
-.item{
-  margin-bottom:10px;
-}
-
-.item label{
-  cursor:pointer;
-}
-
-button{
-  padding:10px 15px;
-  margin:10px 15px;
-  background:#4aa3ff;
-  border:none;
-  border-radius:6px;
-  color:white;
-  cursor:pointer;
-}
-</style>
+    /* Big reminder card */
+    .stop-card {
+      border: 1px solid rgba(255,204,102,.35);
+      background: linear-gradient(180deg, rgba(255,204,102,.12), rgba(18,24,37,.92));
+    }
+    .stop-head {
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .stop-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .stop-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+    .ref-only {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .tag {
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 11px;
+    }
+    footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 22px 14px 40px;
+      text-align: center;
+    }
+    a { color: var(--accent); text-decoration: none; }
+  </style>
 </head>
-
 <body>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div>
+          <h1>Defensive Driving – Digital Checklist</h1>
+          <div class="subtitle">Mobile-friendly checklist (starts at <b>Wiper Blades</b>) • Progress saves on-device</div>
+        </div>
+        <div class="pill" id="statusPill">0% complete</div>
+      </div>
 
-<header>
-<h1>Defensive Driving Checklist</h1>
-<p>Review before driving. Do NOT use phone while vehicle is moving.</p>
-</header>
+      <div class="row">
+        <div class="controls">
+          <div class="search">
+            <input id="search" type="search" placeholder="Search items (e.g., brake test, cones, lane changes)"/>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn primary" id="expandAll" type="button">Expand all</button>
+            <button class="btn" id="collapseAll" type="button">Collapse all</button>
+            <button class="btn danger" id="resetAll" type="button">Reset checks</button>
+          </div>
+        </div>
 
-<div class="section">
-<h2 onclick="toggle(this)">STOP – Read Before Driving</h2>
-<div class="items">
-<div class="item">
-<input type="checkbox" id="confirm">
-<label for="confirm"><strong>Phone down. Hands-free only. No checklist use while moving.</strong></label>
-</div>
-<p>Review driving expectations mentally before moving vehicle.</p>
-</div>
-</div>
+        <div class="progress-wrap">
+          <div class="progress-top">
+            <div><span class="tag">Saved</span> <span id="doneCount">0</span>/<span id="totalCount">0</span> done</div>
+            <div id="lastSaved">—</div>
+          </div>
+          <div class="bar"><div id="barFill"></div></div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<div class="section">
-<h2 onclick="toggle(this)">PRE-DRIVE CHECKS</h2>
-<div class="items">
-<div class="item"><input type="checkbox"><label>Wiper blades in good condition</label></div>
-<div class="item"><input type="checkbox"><label>Valid driver’s license verified (do NOT record)</label></div>
-<div class="item"><input type="checkbox"><label>Tools secured</label></div>
-<div class="item"><input type="checkbox"><label>Doors, bins, ladders secured</label></div>
-<div class="item"><input type="checkbox"><label>Lights, mirrors clean</label></div>
-<div class="item"><input type="checkbox"><label>No new exterior damage</label></div>
-<div class="item"><input type="checkbox"><label>Tires good condition</label></div>
-<div class="item"><input type="checkbox"><label>Check under vehicle for leaks</label></div>
-<div class="item"><input type="checkbox"><label>Check fluids and belts</label></div>
-<div class="item"><input type="checkbox"><label>Passenger area clean</label></div>
-<div class="item"><input type="checkbox"><label>Test signals, horn, flashers, wipers, seatbelts</label></div>
-<div class="item"><input type="checkbox"><label>Adjust mirrors and seat</label></div>
-<div class="item"><input type="checkbox"><label>Perform 10-second brake test</label></div>
-<div class="item"><input type="checkbox"><label>Vehicle height sticker visible</label></div>
-</div>
-</div>
+  <main class="wrap" id="app">
 
-<div class="section">
-<h2 onclick="toggle(this)">SEEING HABITS (Reference Only)</h2>
-<div class="items">
-<p>Scan long & short view</p>
-<p>Check blind spots</p>
-<p>Maintain following distance</p>
-<p>L-R-L at intersections</p>
-<p>Mirror scanning</p>
-</div>
-</div>
+    <!-- STOP / BEFORE DRIVING REMINDER -->
+    <div class="card stop-card" style="margin-top:14px;">
+      <div class="inner">
+        <div class="stop-head">
+          <div>
+            <div class="stop-title">STOP – Read BEFORE you start driving</div>
+            <p class="stop-note">Review this now. Once you’re moving, do <b>not</b> use the phone or interact with the checklist.</p>
+          </div>
+          <div class="tag">Pre-drive reminder</div>
+        </div>
 
-<div class="section">
-<h2 onclick="toggle(this)">CIRCLE OF SAFETY</h2>
-<div class="items">
-<div class="item"><input type="checkbox"><label>Secure tools and paperwork</label></div>
-<div class="item"><input type="checkbox"><label>Walk full circle facing traffic</label></div>
-<div class="item"><input type="checkbox"><label>Check blind spots</label></div>
-</div>
-</div>
+        <div class="item" data-static="1">
+          <input id="pre_drive_phone_down" type="checkbox"/>
+          <label for="pre_drive_phone_down"><b>Phone down / hands-free only.</b> I will not use this checklist while the vehicle is moving.</label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="display:grid; gap:10px;">
+          <div class="sec-title" style="font-size:13px;">Driving Observation Brief (reference)</div>
+          <div class="ref-only">These are <b>reference targets</b> to demonstrate during the drive. Do not check boxes while driving.</div>
+
+          <details open class="card" style="box-shadow:none; border-radius:14px; border:1px solid var(--border); background: rgba(255,255,255,.02);">
+            <summary>
+              <div class="sec-title">Reference Only: Driving Behaviors</div>
+              <div class="sec-meta">Review now
+                <svg class="chev" viewBox="0 0 24 24" fill="none">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </summary>
+            <div class="items" style="padding-top:0;">
+              <div class="item" data-ref="1"><div style="width:20px;"></div><div><div style="font-weight:700; font-size:13px;">Seeing Habits</div><small>• Scanning Long View &amp; Short View</small><small>• Checking Blind Spots</small><small>• Maintain Correct Following Distance</small><small>• Safely Handling Tailgating Situations</small><small>• Scanning Using Rear View &amp; Side View Mirrors</small><small>• Using L-R-L in Cross Traffic Situations</small></div></div><div class="item" data-ref="1"><div style="width:20px;"></div><div><div style="font-weight:700; font-size:13px;">Space Cushion</div><small>• Correct Distance Behind Stopped Vehicle</small><small>• Correct Distance Behind Cross Walk / Limit Line</small></div></div><div class="item" data-ref="1"><div style="width:20px;"></div><div><div style="font-weight:700; font-size:13px;">Hazard Recognition</div><small>• School Zones (Adjust Speed)</small><small>• RR Crossings (Adjust Speed &amp; Scan)</small><small>• Parked Cars (Foot Off Accelerator-On Brake, Eye Contact)</small><small>• Pedestrians (Foot Off Accelerator-On Brake, Eye Contact)</small><small>• Stale Green Light (Foot Off Accelerator-On Brake, Point of Decision)</small><small>• Identify Potential &amp; Actual Hazards</small><small>• Uncontrolled / Blind Intersections (Foot Off Accelerator-On Brake, L-R-L)</small></div></div><div class="item" data-ref="1"><div style="width:20px;"></div><div><div style="font-weight:700; font-size:13px;">Maneuvers</div><small>• Right Turns</small><small>• Left Turns</small><small>• Lane Changes</small><small>• Highway or Freeway Entry/Exit</small><small>• Backing</small><small>• Parking/Chocking (If applicable)</small><small>• Come to Complete Stop When Applicable</small></div></div>
+              <div class="item" data-ref="1">
+                <div style="width:20px;"></div>
+                <div>
+                  <div style="font-weight:700; font-size:13px;">Finish Pre-Drive Confirmation</div>
+                  <small>• Checklist reviewed • Phone down • Begin drive</small>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CHECKLIST -->
+    <div class="card" style="margin-top:14px;" id="checklistCard">
+      <div class="inner" style="padding-bottom: 0;">
+        <div class="sec-title">Checklist Sections</div>
+        <div class="subtitle" style="margin-top:6px;">Tap a section to expand. Checks auto-save to your device.</div>
+      </div>
+
+      <div id="sections"></div>
+    </div>
+
+  </main>
+
+  <footer>
+    Tip: If you host this on Netlify/GitHub Pages, it’ll work like a simple mobile app.
+  </footer>
 
 <script>
-function toggle(el){
-  const items = el.nextElementSibling;
-  items.style.display = items.style.display === "block" ? "none" : "block";
-}
-</script>
+(function(){
+  const STORAGE_KEY = "defensive_driving_checklist_v1";
+  const SAVE_TS_KEY = "defensive_driving_checklist_v1_saved_at";
 
+  const data = [{"title": "Pre-Drive Checks", "items": ["Wiper blades are in good condition.", "Valid Driver\u2019s License appropriate for the vehicle. (DO NOT ENTER THE EMPLOYEE'S DL INTO ANY FIELDS ON THIS FORM OR ANYWHERE WITHIN DOCS. DO NOT UPLOAD PICTURES OF THE EMPLOYEE'S DL)", "Tools, equipment and supplies are properly stored.", "Doors, trunk lids and bin doors are closed and secured. Ladders, ladder racks and other equipment are secured.", "Lights, window, and mirrors are clean and undamaged.", "No new damage to the exterior of the vehicle.", "Tires appear to be properly inflated and in good condition. (If tires appear to be underinflated, check with tire pressure gauge.)", "Check under the vehicle for early signs of leaking fluids which should be addressed.", "Lift the hood and check fluid levels and belts for significant or uneven wear.", "Inspect the passenger area for proper housekeeping. No loose items, including those in open compartments or distracting items attached to sun visors or rearview mirrors.", "Test directional signals, lights, horn, emergency flashers, wiper operation, and seatbelts to ensure they work properly.", "Adjust mirrors, seat position, and seatbelts in preparation for driving.", "Perform the 10-second brake test: With engine running, press brake pedal lightly (Do not pump); Hold the brake application for 10 seconds. The pedal should not creep down; If it does creep down, a PRE-DRIVE CHECKS - hydraulic component of the braking system may be defective. DO NOT DRIVE THE VEHICLE until it can be checked by a qualified vehicle technician.", "Vehicle Height sticker is visible to the driver in the cab and covered with employee.", "Aerial Lifts Only- Operating controls and associated mechanisms are working properly.", "Aerial Lifts Only- Visual and audible safety devices are available and working.", "Aerial Lifts Only- Visually inspect hydraulic and pneumatic systems for possible leaks or weak spots.", "Aerial Lifts Only- Visually inspect fiberglass and other insulating components to ensure they are in good conditions.", "Aerial Lifts Only- Verify that operational and instructional markings are in good condition.", "Aerial Lifts Only- Check that electrical systems related to the aerial device are functioning properly.", "Aerial Lifts Only- Inspect bolts, pins, and other fasteners to ensure they are in good condition.", "Aerial Lifts Only- Ensure proper fall protection equipment is available and in good condition.", "Complete an overview of the safest route to the destination prior to departure."]}, {"title": "Seeing Habits", "items": ["Scanning Long View & Short View", "Checking Blind Spots", "Maintain Correct Following Distance", "Safely Handling Tailgating Situations", "Scanning Using Rear View & Side View Mirrors", "Using L-R-L in Cross Traffic Situations"]}, {"title": "Space Cushion", "items": ["Correct Distance Behind Stopped Vehicle", "Correct Distance Behind Cross Walk / Limit Line"]}, {"title": "Hazard Recognition", "items": ["School Zones (Adjust Speed)", "RR Crossings (Adjust Speed & Scan)", "Parked Cars (Foot Off Accelerator-On Brake, Eye Contact)", "Pedestrians (Foot Off Accelerator-On Brake, Eye Contact)", "Stale Green Light (Foot Off Accelerator-On Brake, Point of Decision)", "Identify Potential & Actual Hazards", "Uncontrolled / Blind Intersections (Foot Off Accelerator-On Brake, L-R-L)"]}, {"title": "Maneuvers", "items": ["Right Turns", "Left Turns", "Lane Changes", "Highway or Freeway Entry/Exit", "Backing", "Parking/Chocking (If applicable)", "Come to Complete Stop When Applicable"]}, {"title": "Circle Of Safety", "items": ["Once the job task has been completed, did the technician secure tools and equipment, complete any necessary computer/paperwork/other tasks, then conduct the Circle of Safety check by walking around the vehicle while facing traffic?", "Look under the vehicle to be certain there are no objects that will obstruct a safe departure. Check in the safest manner possible, usually by looking from the front and from the rear of the vehicle avoiding looking underneath the vehicle from the street side.", "Look for other area hazards such as mailboxes, light poles, holes, trees, other vehicles, etc., as well as, obvious vehicle hazards such as flat tires, etc.", "Check the known blind spots of the vehicle to be sure it is safe to pull out."]}, {"title": "Safety Cones", "items": ["Place cones upon arrival.", "Identify hazards and fixed objects surrounding the vehicle parking location using an opportunity cone to bring attention to the hazard (3rd Cone Option - If applicable for your Business Unit).", "If no stationary object existed, was the opportunity cone placed near the passenger-side door (3rd Cone Option - If applicable for your Business Unit)?", "Proper type/height cones utilized.", "Pick up the cones, as applicable, as the check was completed."]}, {"title": "Trailer Towing", "items": ["If applicable: confirm trailer towing evaluation/competency was completed with trailer coupled to the vehicle."]}];
+
+  // Build the checklist UI
+  const sectionsEl = document.getElementById("sections");
+
+  // Create stable ids
+  function makeId(sectionIdx, itemIdx) {
+    return `s${sectionIdx}_i${itemIdx}`;
+  }
+
+  // Load saved state
+  function loadState() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(SAVE_TS_KEY, new Date().toISOString());
+    updateStats();
+  }
+
+  const state = loadState();
+
+  // Helper: count totals
+  function getAllCheckboxes() {
+    return Array.from(document.querySelectorAll('input[type="checkbox"][data-check="1"], input[type="checkbox"]#pre_drive_phone_down'));
+  }
+
+  function updateStats() {
+    const all = getAllCheckboxes();
+    const done = all.filter(cb => cb.checked).length;
+    const total = all.length;
+
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById("statusPill").textContent = `${pct}% complete`;
+    document.getElementById("doneCount").textContent = done;
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("barFill").style.width = pct + "%";
+
+    const ts = localStorage.getItem(SAVE_TS_KEY);
+    document.getElementById("lastSaved").textContent = ts ? ("Saved " + new Date(ts).toLocaleString()) : "—";
+  }
+
+  function setItemDoneClass(cb) {
+    const wrap = cb.closest(".item");
+    if (!wrap) return;
+    wrap.classList.toggle("done", cb.checked);
+  }
+
+  // Render sections
+  data.forEach((sec, sIdx) => {
+    const det = document.createElement("details");
+    det.open = (sIdx === 0); // open pre-drive checks by default
+
+    const sum = document.createElement("summary");
+
+    const left = document.createElement("div");
+    left.className = "sec-title";
+    left.textContent = sec.title;
+
+    const right = document.createElement("div");
+    right.className = "sec-meta";
+    right.innerHTML = `<span id="meta_${sIdx}">0/${sec.items.length}</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`;
+
+    sum.appendChild(left);
+    sum.appendChild(right);
+
+    const items = document.createElement("div");
+    items.className = "items";
+
+    sec.items.forEach((text, iIdx) => {
+      const id = makeId(sIdx, iIdx);
+
+      const item = document.createElement("div");
+      item.className = "item";
+      item.dataset.section = sec.title.toLowerCase();
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.id = id;
+      cb.dataset.check = "1";
+
+      // Restore checked state
+      if (state[id]) cb.checked = true;
+
+      cb.addEventListener("change", () => {
+        state[id] = cb.checked;
+        saveState(state);
+        setItemDoneClass(cb);
+        updateSectionMeta(sIdx);
+      });
+
+      const lab = document.createElement("label");
+      lab.setAttribute("for", id);
+      lab.textContent = text;
+
+      item.appendChild(cb);
+      item.appendChild(lab);
+      items.appendChild(item);
+
+      // initial class
+      setItemDoneClass(cb);
+    });
+
+    det.appendChild(sum);
+    det.appendChild(items);
+    sectionsEl.appendChild(det);
+
+    function updateSectionMeta(idx) {
+      const secBox = Array.from(items.querySelectorAll('input[type="checkbox"][data-check="1"]'));
+      const done = secBox.filter(x => x.checked).length;
+      const total = secBox.length;
+      const meta = document.getElementById("meta_" + idx);
+      if (meta) meta.textContent = `${done}/${total}`;
+    }
+    updateSectionMeta(sIdx);
+  });
+
+  // Pre-drive checkbox persistence
+  const preCb = document.getElementById("pre_drive_phone_down");
+  const PRE_ID = "pre_drive_phone_down";
+  if (state[PRE_ID]) preCb.checked = true;
+  setItemDoneClass(preCb);
+
+  preCb.addEventListener("change", () => {
+    state[PRE_ID] = preCb.checked;
+    saveState(state);
+    setItemDoneClass(preCb);
+  });
+
+  // Search / filter
+  const search = document.getElementById("search");
+  search.addEventListener("input", () => {
+    const q = search.value.trim().toLowerCase();
+    const items = Array.from(document.querySelectorAll(".item"));
+    items.forEach(el => {
+      if (el.dataset.static === "1" || el.dataset.ref === "1") {
+        // Always show the big reminder content
+        el.style.display = "";
+        return;
+      }
+      const text = el.textContent.toLowerCase();
+      el.style.display = (q === "" || text.includes(q)) ? "" : "none";
+    });
+  });
+
+  // Expand / Collapse
+  document.getElementById("expandAll").addEventListener("click", () => {
+    document.querySelectorAll("details").forEach(d => d.open = true);
+  });
+  document.getElementById("collapseAll").addEventListener("click", () => {
+    document.querySelectorAll("details").forEach(d => d.open = false);
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  // Reset
+  document.getElementById("resetAll").addEventListener("click", () => {
+    const ok = confirm("Reset all checkboxes? This will clear saved progress on this device.");
+    if (!ok) return;
+
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(SAVE_TS_KEY);
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.checked = false;
+      setItemDoneClass(cb);
+    });
+
+    // refresh section metas
+    document.querySelectorAll('[id^="meta_"]').forEach(meta => meta.textContent = "0/0");
+
+    updateStats();
+  });
+
+  // initial stats
+  updateStats();
+})();
+</script>
 </body>
 </html>
