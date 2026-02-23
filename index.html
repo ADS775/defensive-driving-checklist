@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defensive Driving Checklist</title>
 
+<style>
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#0b0f14;
+  color:#e7eefc;
+}
+
+header{
+  padding:20px;
+  background:#121825;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+h1{
+  margin:0;
+  font-size:20px;
+}
+
+.section{
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.section h2{
+  margin:0;
+  padding:15px;
+  background:#0f1520;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.items{
+  padding:10px 15px 20px 15px;
+  display:none;
+}
+
+.item{
+  margin-bottom:10px;
+}
+
+.item label{
+  cursor:pointer;
+}
+
+button{
+  padding:10px 15px;
+  margin:10px 15px;
+  background:#4aa3ff;
+  border:none;
+  border-radius:6px;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Defensive Driving Checklist</h1>
+<p>Review before driving. Do NOT use phone while vehicle is moving.</p>
+</header>
+
+<div class="section">
+<h2 onclick="toggle(this)">STOP – Read Before Driving</h2>
+<div class="items">
+<div class="item">
+<input type="checkbox" id="confirm">
+<label for="confirm"><strong>Phone down. Hands-free only. No checklist use while moving.</strong></label>
+</div>
+<p>Review driving expectations mentally before moving vehicle.</p>
+</div>
+</div>
+
+<div class="section">
+<h2 onclick="toggle(this)">PRE-DRIVE CHECKS</h2>
+<div class="items">
+<div class="item"><input type="checkbox"><label>Wiper blades in good condition</label></div>
+<div class="item"><input type="checkbox"><label>Valid driver’s license verified (do NOT record)</label></div>
+<div class="item"><input type="checkbox"><label>Tools secured</label></div>
+<div class="item"><input type="checkbox"><label>Doors, bins, ladders secured</label></div>
+<div class="item"><input type="checkbox"><label>Lights, mirrors clean</label></div>
+<div class="item"><input type="checkbox"><label>No new exterior damage</label></div>
+<div class="item"><input type="checkbox"><label>Tires good condition</label></div>
+<div class="item"><input type="checkbox"><label>Check under vehicle for leaks</label></div>
+<div class="item"><input type="checkbox"><label>Check fluids and belts</label></div>
+<div class="item"><input type="checkbox"><label>Passenger area clean</label></div>
+<div class="item"><input type="checkbox"><label>Test signals, horn, flashers, wipers, seatbelts</label></div>
+<div class="item"><input type="checkbox"><label>Adjust mirrors and seat</label></div>
+<div class="item"><input type="checkbox"><label>Perform 10-second brake test</label></div>
+<div class="item"><input type="checkbox"><label>Vehicle height sticker visible</label></div>
+</div>
+</div>
+
+<div class="section">
+<h2 onclick="toggle(this)">SEEING HABITS (Reference Only)</h2>
+<div class="items">
+<p>Scan long & short view</p>
+<p>Check blind spots</p>
+<p>Maintain following distance</p>
+<p>L-R-L at intersections</p>
+<p>Mirror scanning</p>
+</div>
+</div>
+
+<div class="section">
+<h2 onclick="toggle(this)">CIRCLE OF SAFETY</h2>
+<div class="items">
+<div class="item"><input type="checkbox"><label>Secure tools and paperwork</label></div>
+<div class="item"><input type="checkbox"><label>Walk full circle facing traffic</label></div>
+<div class="item"><input type="checkbox"><label>Check blind spots</label></div>
+</div>
+</div>
+
+<script>
+function toggle(el){
+  const items = el.nextElementSibling;
+  items.style.display = items.style.display === "block" ? "none" : "block";
+}
+</script>
+
+</body>
+</html>
